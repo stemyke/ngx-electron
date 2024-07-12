@@ -1,0 +1,3 @@
+export {
+    IpcHandler
+} from "./handle";

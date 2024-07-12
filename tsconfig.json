@@ -1,0 +1,33 @@
+{
+    "compileOnSave": false,
+    "angularCompilerOptions": {
+        "enableIvy": true,
+        "compilationMode": "partial",
+        "strictMetadataEmit": true
+    },
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "module": "esnext",
+        "outDir": "./dist/out-tsc",
+        "baseUrl": ".",
+        "rootDir": ".",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "skipLibCheck": true,
+        "target": "es2018",
+        "useDefineForClassFields": false,
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "paths": {
+            "@stemy/ngx-electron/types": ["./types"],
+        },
+        "lib": [
+            "es2017",
+            "dom"
+        ]
+    }
+}
