@@ -4,6 +4,6 @@ import {FunctionKeys, FunctionProperty, IpcFunctions, ReturnType} from "@stemy/n
 export class IpcHandler<T extends {} = IpcFunctions> {
     handle<K extends FunctionKeys<T>, P extends FunctionProperty<T, K>>
     (channel: K, handler: (...args: Parameters<P>) => ReturnType<P>) {
-        ipcMain.handle(channel as string, (event, args) => handler(...args));
+        ipcMain.handle(channel as string, (event, ...args: Parameters<P>) => handler(...args));
     }
 }
