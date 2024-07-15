@@ -1,5 +1,11 @@
 import {Injectable} from "@angular/core";
-import {FunctionKeys, FunctionProperty, IpcFunctions, OnlyFunctions} from "@stemy/ngx-electron/types";
+import {
+    FunctionKeys,
+    FunctionProperty,
+    IpcFunctions,
+    OnlyFunctions,
+    PromisedType
+} from "@stemy/ngx-electron/types";
 import {ElectronAPI} from "./renderer";
 
 @Injectable()
@@ -67,10 +73,10 @@ export class ElectronService<T extends OnlyFunctions<{}> = IpcFunctions> {
         this.electron = window.electron || window.require?.("electron");
     }
 
-    async invoke<K extends FunctionKeys<T>, P extends FunctionProperty<T, K>>(method: K, ...args: Parameters<P>): Promise<ReturnType<P>> {
+    invoke<K extends FunctionKeys<T>, P extends FunctionProperty<T, K>>(method: K, ...args: Parameters<P>): PromisedType<ReturnType<P>> {
         if (!this.ipcRenderer) {
             throw new Error("ipcRenderer is not available!");
         }
-        return this.ipcRenderer.invoke("handle-electron-method", method, args);
+        return this.ipcRenderer.invoke("handle-electron-method", method, args) as any;
     }
 }

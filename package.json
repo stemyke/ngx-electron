@@ -1,6 +1,6 @@
 {
     "name": "@stemy/ngx-electron",
-    "version": "17.0.2",
+    "version": "17.0.3",
     "license": "MIT",
     "repository": "https://github.com/stemyke/ngx-electron.git",
     "scripts": {

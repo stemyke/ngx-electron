@@ -3,6 +3,5 @@ export {
     OnlyFunctions,
     FunctionKeys,
     FunctionProperty,
-    ReturnType,
-    Parameters
+    PromisedType,
 } from "./common-types";

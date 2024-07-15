@@ -1,5 +1,5 @@
 import {ipcMain} from "electron";
-import {FunctionKeys, FunctionProperty, IpcFunctions, ReturnType} from "@stemy/ngx-electron/types";
+import {FunctionKeys, FunctionProperty, IpcFunctions} from "@stemy/ngx-electron/types";
 
 export class IpcHandler<T extends {} = IpcFunctions> {
 
