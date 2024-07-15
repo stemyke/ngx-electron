@@ -64,10 +64,17 @@ export class ElectronService<T extends OnlyFunctions<{}> = IpcFunctions> {
     }
 
     constructor() {
-        this.electron = window.require?.("electron");
+        this.electron = window.electron || window.require?.("electron");
     }
 
-    invoke<K extends FunctionKeys<T>, P extends FunctionProperty<T, K>>(channel: K, ...args: Parameters<P>): Promise<ReturnType<P>> {
+    async invoke<K extends FunctionKeys<T>, P extends FunctionProperty<T, K>>(channel: K, ...args: Parameters<P>): Promise<ReturnType<P>> {
+        if (!this.ipcRenderer) {
+            throw new Error("ipcRenderer is not available!");
+        }
+        const exists = await this.ipcRenderer.invoke("handler-exists", channel);
+        if (!exists) {
+            throw new Error(`Handler for channel '${channel as string}' does not exist! Please use IpcHandler.handle() to create one.`);
+        }
         return this.ipcRenderer.invoke(channel as string, ...args);
     }
 }
