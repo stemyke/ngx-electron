@@ -3,22 +3,23 @@ import {FunctionKeys, FunctionProperty, IpcFunctions, ReturnType} from "@stemy/n
 
 export class IpcHandler<T extends {} = IpcFunctions> {
 
-    protected static exists: {[handler: string]: boolean} = null;
+    protected static handlers: {[handler: string]: Function} = null;
 
     constructor() {
-        if (!IpcHandler.exists) {
-            IpcHandler.exists = {};
-            ipcMain.handle("handler-exists", (event, method: string) => {
-                const channel = `method:${method}`;
-                return IpcHandler.exists[channel] || false;
+        if (!IpcHandler.handlers) {
+            IpcHandler.handlers = {};
+            ipcMain.handle("handle-electron-method", (_, method: string, params: any[]) => {
+                const handler = IpcHandler.handlers[`method:${method}`];
+                if (!handler) {
+                    throw new Error(`Handler for method: '${method}' does not exist! Please use IpcHandler.handle() to create one.`);
+                }
+                return handler(...params);
             });
         }
     }
 
-    handle<K extends FunctionKeys<T>, P extends FunctionProperty<T, K>>
-    (method: K, handler: (...args: Parameters<P>) => ReturnType<P>) {
-        const channel = `method:${method as string}`;
-        IpcHandler.exists[channel] = true;
-        ipcMain.handle(channel, (event, ...args: Parameters<P>) => handler(...args));
+    handle<K extends FunctionKeys<T>, P extends FunctionProperty<T, K>>(method: K, cb: (...args: Parameters<P>) => ReturnType<P>) {
+        const handler = `method:${method as string}`;
+        IpcHandler.handlers[handler] = cb;
     }
 }

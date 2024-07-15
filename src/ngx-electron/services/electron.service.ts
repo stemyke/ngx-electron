@@ -71,11 +71,6 @@ export class ElectronService<T extends OnlyFunctions<{}> = IpcFunctions> {
         if (!this.ipcRenderer) {
             throw new Error("ipcRenderer is not available!");
         }
-        const channel = `method:${method as string}`;
-        const exists = await this.ipcRenderer.invoke("handler-exists", channel);
-        if (!exists) {
-            throw new Error(`Handler for '${channel}' does not exist! Please use IpcHandler.handle() to create one.`);
-        }
-        return this.ipcRenderer.invoke(channel, ...args);
+        return this.ipcRenderer.invoke("handle-electron-method", method, args);
     }
 }
